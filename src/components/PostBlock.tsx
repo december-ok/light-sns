@@ -16,7 +16,7 @@ export default function PostBlock() {
   const [toggle, onChange, liked, setLiked] = useBoolean(false);
 
   return (
-    <div className="PostBlock mb-1">
+    <div className="PostBlock mb-2">
       <Card>
         <Card.Body>
           <Link to="/users/1">

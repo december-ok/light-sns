@@ -1,4 +1,4 @@
-import { Card, Image } from "react-bootstrap";
+import { Card, Image, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const img = `https://www.aljazeera.com/wp-content/uploads/2021/08/2019-12-07T000000Z_879038429_RC2LQD9L67FQ_RTRMADP_3_SOCCER-SPAIN-FCB-RCD-REPORT.jpg?resize=770%2C513`;
@@ -19,19 +19,17 @@ export default function FriendBlockList() {
         <Card.Header className="bg-info bg-gradient text-white">
           Following
         </Card.Header>
-      </Card>
-      {[1, 2, 0.3, 3].map(() => (
-        <Link to="/users/dsf">
-          <Card>
-            <Card.Body>
-              <Card.Title>
+        <ListGroup variant="flush">
+          {[1, 2, 0.3, 3].map(() => (
+            <Link to="/users/dsf">
+              <ListGroup.Item>
                 <Image className="profile me-3" src={img} />
                 Messi
-              </Card.Title>
-            </Card.Body>
-          </Card>
-        </Link>
-      ))}
+              </ListGroup.Item>
+            </Link>
+          ))}
+        </ListGroup>
+      </Card>
     </div>
   );
 }
