@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useCheckBox } from "../../hooks/useCheckBox";
+import { useBoolean } from "../../hooks/useCheckBox";
 import { useInput } from "../../hooks/useInput";
 
 export default function Join() {
@@ -11,7 +11,7 @@ export default function Join() {
   const [onPasswordChange, passwordValue] = useInput();
   const [onPasswordCheckChange, passwordCheckValue] = useInput();
   const [onNameChange, passwordNameValue] = useInput();
-  const [onCheckChange, checkValue] = useCheckBox(false);
+  const [onCheckChange, checkValue] = useBoolean(false);
 
   const doJoin = useCallback(() => {
     //hihihihihi

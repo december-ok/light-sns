@@ -3,7 +3,7 @@ import FriendBlockList from "../timeline/FriendBlockList";
 import UserBlock from "./UserBlock";
 import UserPosts from "./UserPosts";
 
-export default function User() {
+export default function Users() {
   return (
     <div className="User">
       <Row>

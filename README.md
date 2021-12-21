@@ -5,5 +5,6 @@
 - [x] Login Page
 - [x] Join Page
 - [x] TimeLine Page
-- [ ] User Page
-- [ ] Post Page
+- [x] User Page
+- [x] Post Page
+- [x] Write Page

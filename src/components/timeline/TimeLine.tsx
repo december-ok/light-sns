@@ -1,6 +1,5 @@
 import { Col, Row } from "react-bootstrap";
 import FriendBlockList from "./FriendBlockList";
-import PostBlock from "../PostBlock";
 import PostBlockList from "./PostBlockList";
 
 export default function TimeLine() {
