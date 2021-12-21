@@ -3,7 +3,7 @@
 ## To do
 
 - [x] Login Page
-- [ ] Join Page
-- [ ] Main Page
+- [x] Join Page
+- [x] TimeLine Page
 - [ ] User Page
 - [ ] Post Page
