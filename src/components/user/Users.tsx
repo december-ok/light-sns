@@ -6,17 +6,8 @@ import UserPosts from "./UserPosts";
 export default function Users() {
   return (
     <div className="User">
-      <Row>
-        <Col></Col>
-        <Col sm={12} lg={6}>
-          <UserBlock />
-          <UserPosts />
-        </Col>
-        <Col className="d-none d-lg-inline" lg={3}>
-          <FriendBlockList />
-        </Col>
-        <Col></Col>
-      </Row>
+      <UserBlock />
+      <UserPosts />
     </div>
   );
 }

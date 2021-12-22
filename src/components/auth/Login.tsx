@@ -1,18 +1,21 @@
-import React, { useCallback, useState } from "react";
-import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
+import {
+  Alert,
+  Button,
+  Col,
+  Container,
+  Form,
+  Row,
+  Spinner,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useInput } from "../../hooks/useInput";
+import { useLogin, useLoginCheck } from "../../hooks/authHooks";
 
 import "../../sytles/login.scss";
 
 export default function Login() {
-  const [loginError, setLoginError] = useState(false);
-  const [onEmailChange, emailValue] = useInput();
-  const [onPasswordChange, passwordValue] = useInput();
-
-  const doLogin = useCallback(() => {
-    //hihihihihi
-  }, []);
+  useLoginCheck(false);
+  const [onEmailChange, onPasswordChange, onChange, doLogin, loading, error] =
+    useLogin();
 
   return (
     <div className="Login">
@@ -45,20 +48,29 @@ export default function Login() {
                 </Form.Text>
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                <Form.Check type="checkbox" label="Remember Me" />
+                <Form.Check
+                  type="checkbox"
+                  label="Remember Me"
+                  onChange={onChange}
+                />
               </Form.Group>
-              {loginError && (
+              {error && (
                 <Alert variant="danger">⚠ Email or Password is Wrong!</Alert>
               )}
               <Form.Group className="mt-3">
-                <Button type="submit" variant="primary">
+                <Button type="submit" variant="primary" disabled={loading}>
                   Login
                 </Button>
                 <Link to="/join">
-                  <Button className="mx-3" variant="outline-primary">
+                  <Button
+                    className="mx-3"
+                    variant="outline-primary"
+                    disabled={loading}
+                  >
                     Join
                   </Button>
                 </Link>
+                {loading && <Spinner animation="border" role="status" />}
               </Form.Group>
             </Form>
           </Col>

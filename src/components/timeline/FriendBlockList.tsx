@@ -20,8 +20,8 @@ export default function FriendBlockList() {
           Following
         </Card.Header>
         <ListGroup variant="flush">
-          {[1, 2, 0.3, 3].map(() => (
-            <Link to="/users/dsf">
+          {[1, 2, 0.3, 3].map((item, indx) => (
+            <Link to="/main/users/dsf" key={indx}>
               <ListGroup.Item>
                 <Image className="profile me-3" src={img} />
                 Messi

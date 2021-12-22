@@ -6,14 +6,14 @@ export const useBoolean = (init: boolean) => {
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.checked);
   }, []);
-  const onToggle = useCallback(() => {
+  const toggle = useCallback(() => {
     setValue((value) => !value);
   }, []);
 
-  return [onToggle, onChange, value, setValue] as [
-    typeof onToggle,
-    typeof onChange,
-    typeof value,
-    typeof setValue
-  ];
+  return { toggle, onChange, value, setValue } as {
+    toggle: typeof toggle;
+    onChange: typeof onChange;
+    value: typeof value;
+    setValue: typeof setValue;
+  };
 };

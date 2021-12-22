@@ -9,8 +9,8 @@ export default function UserPosts() {
           Posts
         </Card.Header>
       </Card>
-      {[1, 2, 0.3, 3].map(() => (
-        <PostBlock />
+      {[1, 2, 0.3, 3].map((i, idx) => (
+        <PostBlock key={idx} />
       ))}
     </div>
   );
