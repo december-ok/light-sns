@@ -15,22 +15,24 @@ export default function Main() {
   return (
     <div className="Main">
       {loaded && !loggedIn && <Navigate to="/" />}
-      <Row>
-        <Col></Col>
-        <Col sm={12} lg={6}>
-          <Routes>
-            <Route path="timeLine" element={<PostBlockList />} />
-            <Route path="writing" element={<Writing />} />
-            <Route path="posts/:id" element={<Posts />} />
-            <Route path="users/:id" element={<Users />} />
-            <Route path="*" element={<Error />} />
-          </Routes>
-        </Col>
-        <Col className="d-none d-lg-inline" lg={3}>
-          <FriendBlockList />
-        </Col>
-        <Col></Col>
-      </Row>
+      {loggedIn && (
+        <Row>
+          <Col></Col>
+          <Col sm={12} lg={6}>
+            <Routes>
+              <Route path="timeLine" element={<PostBlockList />} />
+              <Route path="writing" element={<Writing />} />
+              <Route path="posts/:id" element={<Posts />} />
+              <Route path="users/:id" element={<Users />} />
+              <Route path="*" element={<Error />} />
+            </Routes>
+          </Col>
+          <Col className="d-none d-lg-inline" lg={3}>
+            <FriendBlockList />
+          </Col>
+          <Col></Col>
+        </Row>
+      )}
     </div>
   );
 }

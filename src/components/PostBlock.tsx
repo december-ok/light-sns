@@ -4,7 +4,6 @@ import { Post } from "../@types/types";
 import { useBoolean } from "../hooks/useBoolean";
 
 import "../sytles/postBlock.scss";
-const img = `https://www.aljazeera.com/wp-content/uploads/2021/08/2019-12-07T000000Z_879038429_RC2LQD9L67FQ_RTRMADP_3_SOCCER-SPAIN-FCB-RCD-REPORT.jpg?resize=770%2C513`;
 
 interface PostBlockProps {
   post: Post;
@@ -16,15 +15,13 @@ export default function PostBlock({ post }: PostBlockProps) {
     <div className="PostBlock mb-2">
       <Card>
         <Card.Body>
-          <Link to="/main/users/1">
+          <Link to={`/main/users/${post.author.uid}`}>
             <Card.Title>
               <Image className="profile me-3" src={post.author.profileImg} />
               {post.author.nickName}
             </Card.Title>
           </Link>
-          <Link to="/main/posts/1">
-            <Card.Text>{post.content}</Card.Text>
-          </Link>
+          <Card.Text>{post.content}</Card.Text>
         </Card.Body>
         <Row className="mb-3">
           <Col className="d-flex justify-content-center">

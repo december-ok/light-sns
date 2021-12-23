@@ -6,7 +6,9 @@ import {
   getDoc,
   getDocs,
   getFirestore,
+  orderBy,
   query,
+  where,
 } from "firebase/firestore";
 import {
   ChangeEvent,
@@ -77,7 +79,10 @@ export function useGetPosts() {
     (async () => {
       setLoading(true);
       const db = getFirestore();
-      const queryResult = await query(collection(db, "posts"));
+      const queryResult = await query(
+        collection(db, "posts"),
+        orderBy("createdAt", "desc")
+      );
       const querySnapshot = await getDocs(queryResult);
 
       let tempPosts: DbPost[] = [];
@@ -88,7 +93,10 @@ export function useGetPosts() {
       const promises = tempPosts.map((post: DbPost) => {
         return (async () => {
           const userSnap = await getDoc(doc(db, "users", post.author));
-          returnPosts.push({ ...post, author: userSnap.data() } as Post);
+          returnPosts.push({
+            ...post,
+            author: userSnap.data(),
+          } as Post);
         })();
       });
       await Promise.all(promises);
@@ -101,12 +109,81 @@ export function useGetPosts() {
   return [posts, loading] as [typeof posts, typeof loading];
 }
 
-export function useUserPage() {
+export function useGetUserPosts(uid: string) {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const db = getFirestore();
+      const queryResult = await query(
+        collection(db, "posts"),
+        orderBy("createdAt", "desc"),
+        where("author", "==", uid)
+      );
+      const querySnapshot = await getDocs(queryResult);
+
+      let tempPosts: DbPost[] = [];
+      let returnPosts: Post[] = [];
+      querySnapshot.forEach((document) => {
+        tempPosts.push(document.data() as DbPost);
+      });
+      const promises = tempPosts.map((post: DbPost) => {
+        return (async () => {
+          const userSnap = await getDoc(doc(db, "users", post.author));
+          returnPosts.push({
+            ...post,
+            author: userSnap.data(),
+          } as Post);
+        })();
+      });
+      await Promise.all(promises);
+
+      setPosts(returnPosts);
+      setLoading(false);
+    })();
+  }, []);
+
+  return [posts, loading] as [typeof posts, typeof loading];
+}
+
+export function useUserBlock(uid: string | undefined) {
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [user, setUser] = useState<DbUser | undefined>();
+  const [isCurrentUser, setIsCurrentUser] = useState<boolean>(false);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (typeof uid === "string") {
+      const auth = getAuth();
+      if (auth.currentUser?.uid === uid) {
+        setIsCurrentUser(true);
+      }
+      (async () => {
+        setLoading(true);
+        const db = getFirestore();
+        try {
+          const userSnap = await getDoc(doc(db, "users", uid));
+          if (!userSnap.exists()) {
+            throw new Error();
+          }
+          setUser(userSnap.data() as DbUser);
+          setLoading(false);
+        } catch (error) {
+          setError(true);
+          setLoading(false);
+        }
+      })();
+    } else {
+      setError(true);
+    }
+  }, []);
 
-  return [user, loading, error] as [typeof user, typeof loading, typeof error];
+  return [user, isCurrentUser, loading, error] as [
+    typeof user,
+    typeof isCurrentUser,
+    typeof loading,
+    typeof error
+  ];
 }

@@ -11,7 +11,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { useAppDispatch } from "../modules/hooks";
-import { setLoaded, setLoggedIn } from "../modules/app";
+import { setLoaded, setLoggedIn, setUid } from "../modules/app";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 
 export function useLogin() {
@@ -99,6 +99,7 @@ export function useJoin() {
           nickName: nameValue,
           quote: "Hello!",
           profileImg: "https://i.stack.imgur.com/l60Hf.png",
+          uid: userCredential.user.uid,
         });
 
         setLoading(false);
@@ -139,8 +140,10 @@ export function useLoginCheck() {
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
-      if (user) dispatch(setLoggedIn(true));
-      else dispatch(setLoggedIn(false));
+      if (user) {
+        dispatch(setUid(user.uid));
+        dispatch(setLoggedIn(true));
+      } else dispatch(setLoggedIn(false));
       dispatch(setLoaded(true));
     });
   }, [dispatch]);

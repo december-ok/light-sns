@@ -18,4 +18,5 @@ export type DbUser = {
   uid: string;
   nickName: string;
   profileImg: string;
+  quote: string;
 };
