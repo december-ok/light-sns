@@ -7,12 +7,13 @@ import {
   Row,
   Spinner,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { useJoin, useLoginCheck } from "../../hooks/authHooks";
+import { Link, Navigate } from "react-router-dom";
+import { useJoin } from "../../hooks/authHooks";
+import { useAppSelector } from "../../modules/hooks";
+import { RootState } from "../../modules/store";
 
 export default function Join() {
-  useLoginCheck(false);
-
+  const { loaded, loggedIn } = useAppSelector((state: RootState) => state.app);
   const [
     onEmailChange,
     onPasswordChange,
@@ -27,6 +28,7 @@ export default function Join() {
 
   return (
     <div className="Join">
+      {!loading && loaded && loggedIn && <Navigate to="/main/timeLine" />}
       <Container>
         <Row>
           <Col></Col>
@@ -100,7 +102,13 @@ export default function Join() {
                     Back to Login
                   </Button>
                 </Link>
-                {loading && <Spinner animation="border" role="status" />}
+                {loading && (
+                  <Spinner
+                    className="align-middle"
+                    animation="border"
+                    role="status"
+                  />
+                )}
               </Form.Group>
             </Form>
           </Col>

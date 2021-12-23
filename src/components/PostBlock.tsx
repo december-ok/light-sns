@@ -1,37 +1,29 @@
 import { Button, Card, Col, Image, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { Post } from "../@types/types";
 import { useBoolean } from "../hooks/useBoolean";
 
 import "../sytles/postBlock.scss";
 const img = `https://www.aljazeera.com/wp-content/uploads/2021/08/2019-12-07T000000Z_879038429_RC2LQD9L67FQ_RTRMADP_3_SOCCER-SPAIN-FCB-RCD-REPORT.jpg?resize=770%2C513`;
 
 interface PostBlockProps {
-  userName: string;
-  imgSrc: string;
-  content: string;
+  post: Post;
 }
 
-export default function PostBlock() {
+export default function PostBlock({ post }: PostBlockProps) {
   const { toggle, value } = useBoolean(false);
-
   return (
     <div className="PostBlock mb-2">
       <Card>
         <Card.Body>
           <Link to="/main/users/1">
             <Card.Title>
-              <Image className="profile me-3" src={img} />
-              Messi
+              <Image className="profile me-3" src={post.author.profileImg} />
+              {post.author.nickName}
             </Card.Title>
           </Link>
           <Link to="/main/posts/1">
-            <Card.Text>
-              Lionel Andrés Messi[note 1] (Spanish pronunciation: (About this
-              soundlisten); born 24 June 1987), also known as Leo Messi, is an
-              Argentine professional footballer who plays as a forward for Ligue
-              1 club Paris Saint-Germain and captains the Argentina national
-              team.
-            </Card.Text>
+            <Card.Text>{post.content}</Card.Text>
           </Link>
         </Card.Body>
         <Row className="mb-3">

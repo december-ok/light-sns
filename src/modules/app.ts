@@ -2,31 +2,32 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 
 interface AppState {
-  darkMode: boolean;
+  loaded: boolean;
+  loggedIn: boolean;
 }
 
 // Define the initial state using that type
 const initialState: AppState = {
-  darkMode: false,
+  loaded: false,
+  loggedIn: false,
 };
 
 export const appSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
-    toggleDarkMode: (state) => {
-      state.darkMode = !state.darkMode;
+    setLoaded: (state, action: PayloadAction<boolean>) => {
+      state.loaded = action.payload;
     },
-    // Use the PayloadAction type to declare the contents of `action.payload`
-    setDarkMode: (state, action: PayloadAction<boolean>) => {
-      state.darkMode = action.payload;
+    setLoggedIn: (state, action: PayloadAction<boolean>) => {
+      state.loggedIn = action.payload;
     },
   },
 });
 
-export const { toggleDarkMode, setDarkMode } = appSlice.actions;
+export const { setLoaded, setLoggedIn } = appSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectCount = (state: RootState) => state.app.darkMode;
+export const selectCount = (state: RootState) => state.app;
 
 export default appSlice.reducer;

@@ -1,7 +1,7 @@
-import { Col, Row } from "react-bootstrap";
+import { Post } from "../../@types/types";
 import PostBlock from "../PostBlock";
-import FriendBlockList from "../timeline/FriendBlockList";
 
 export default function Posts() {
-  return <PostBlock />;
+  // return <PostBlock post={post} />;
+  return <div>aa</div>;
 }

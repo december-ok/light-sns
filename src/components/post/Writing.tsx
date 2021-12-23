@@ -1,16 +1,30 @@
-import { Button, Col, Form, Row } from "react-bootstrap";
-import FriendBlockList from "../timeline/FriendBlockList";
+import { Alert, Button, Form, Spinner } from "react-bootstrap";
+import { useWritePost } from "../../hooks/postHooks";
 
 export default function Writing() {
+  const [onContentChange, doWrite, loading, error] = useWritePost();
+
   return (
-    <Form>
+    <Form onSubmit={doWrite}>
       <Form.Group className="mb-3">
         <Form.Label>Write Your Thinking!</Form.Label>
-        <Form.Control as="textarea" rows={3} />
+        <Form.Control as="textarea" rows={3} onChange={onContentChange} />
       </Form.Group>
-      <Button type="submit" variant="primary">
-        Login
+      {error && (
+        <Alert variant="danger">
+          ⚠ Write something! (Or something is wrong!)
+        </Alert>
+      )}
+      <Button type="submit" variant="primary" disabled={loading}>
+        Write
       </Button>
+      {loading && (
+        <Spinner
+          animation="border"
+          role="status"
+          className="ms-3 align-middle"
+        />
+      )}
     </Form>
   );
 }

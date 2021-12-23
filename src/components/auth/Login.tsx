@@ -7,18 +7,21 @@ import {
   Row,
   Spinner,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { useLogin, useLoginCheck } from "../../hooks/authHooks";
+import { Link, Navigate } from "react-router-dom";
+import { useLogin } from "../../hooks/authHooks";
+import { useAppSelector } from "../../modules/hooks";
+import { RootState } from "../../modules/store";
 
 import "../../sytles/login.scss";
 
 export default function Login() {
-  useLoginCheck(false);
+  const { loaded, loggedIn } = useAppSelector((state: RootState) => state.app);
   const [onEmailChange, onPasswordChange, onChange, doLogin, loading, error] =
     useLogin();
 
   return (
     <div className="Login">
+      {!loading && loaded && loggedIn && <Navigate to="/main/timeLine" />}
       <Container>
         <Row>
           <Col></Col>
@@ -70,7 +73,13 @@ export default function Login() {
                     Join
                   </Button>
                 </Link>
-                {loading && <Spinner animation="border" role="status" />}
+                {loading && (
+                  <Spinner
+                    className="align-middle"
+                    animation="border"
+                    role="status"
+                  />
+                )}
               </Form.Group>
             </Form>
           </Col>

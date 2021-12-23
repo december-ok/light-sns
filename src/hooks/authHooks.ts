@@ -9,13 +9,12 @@ import {
   onAuthStateChanged,
   setPersistence,
   signInWithEmailAndPassword,
-  updateProfile,
 } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../modules/hooks";
+import { setLoaded, setLoggedIn } from "../modules/app";
+import { doc, getFirestore, setDoc } from "firebase/firestore";
 
 export function useLogin() {
-  const navigate = useNavigate();
-
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [onEmailChange, emailValue] = useInput();
@@ -35,17 +34,10 @@ export function useLogin() {
           value ? browserLocalPersistence : browserSessionPersistence
         );
 
-        const user = await signInWithEmailAndPassword(
-          auth,
-          emailValue,
-          passwordValue
-        );
-        console.log(user);
-        setLoading(false);
-
-        navigate("/main/timeLine");
+        await signInWithEmailAndPassword(auth, emailValue, passwordValue);
       } catch (error) {
         setError(true);
+      } finally {
         setLoading(false);
       }
     },
@@ -91,15 +83,24 @@ export function useJoin() {
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const auth = getAuth();
+      const db = getFirestore();
       try {
         setLoading(true);
         if (isSame === false || value === false) {
           throw new Error("Somthing is wrong!");
         }
-        await createUserWithEmailAndPassword(auth, emailValue, passwordValue);
-        if (auth.currentUser) {
-          await updateProfile(auth.currentUser, { displayName: nameValue });
-        }
+
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          emailValue,
+          passwordValue
+        );
+        await setDoc(doc(db, "users", userCredential.user.uid), {
+          nickName: nameValue,
+          quote: "Hello!",
+          profileImg: "https://i.stack.imgur.com/l60Hf.png",
+        });
+
         setLoading(false);
       } catch (error) {
         setError(true);
@@ -132,19 +133,15 @@ export function useJoin() {
   ];
 }
 
-export function useLoginCheck(needAuth: boolean) {
-  const navigate = useNavigate();
+export function useLoginCheck() {
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const auth = getAuth();
-    if (needAuth) {
-      if (!auth.currentUser) {
-        navigate("/");
-      }
-    } else {
-      if (auth.currentUser) {
-        navigate("/main/timeLine");
-      }
-    }
-  }, [navigate, needAuth]);
+    onAuthStateChanged(auth, (user) => {
+      if (user) dispatch(setLoggedIn(true));
+      else dispatch(setLoggedIn(false));
+      dispatch(setLoaded(true));
+    });
+  }, [dispatch]);
 }

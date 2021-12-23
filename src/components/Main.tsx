@@ -1,6 +1,7 @@
 import { Col, Row } from "react-bootstrap";
-import { Route, Routes } from "react-router-dom";
-import { useLoginCheck } from "../hooks/authHooks";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { useAppSelector } from "../modules/hooks";
+import { RootState } from "../modules/store";
 import Error from "./Error";
 import Posts from "./post/Posts";
 import Writing from "./post/Writing";
@@ -9,10 +10,11 @@ import PostBlockList from "./timeline/PostBlockList";
 import Users from "./user/Users";
 
 export default function Main() {
-  useLoginCheck(true);
+  const { loaded, loggedIn } = useAppSelector((state: RootState) => state.app);
 
   return (
     <div className="Main">
+      {loaded && !loggedIn && <Navigate to="/" />}
       <Row>
         <Col></Col>
         <Col sm={12} lg={6}>

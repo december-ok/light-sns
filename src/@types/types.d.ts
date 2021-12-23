@@ -1,12 +1,21 @@
-export type User = {
-  id: number;
-  email: string;
-  name: string;
-  profileImgSrc: string;
-  quote: string;
+import { User } from "firebase/auth";
+
+export type DbPost = {
+  content: string;
+  createdAt: Date;
+  heart: number;
+  author: string;
 };
 
 export type Post = {
-  auther: number;
   content: string;
+  createdAt: Date;
+  heart: number;
+  author: DbUser;
+};
+
+export type DbUser = {
+  uid: string;
+  nickName: string;
+  profileImg: string;
 };
